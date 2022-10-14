@@ -1,0 +1,876 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Test",
+        "description": "Test API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://muntian.softwars.com.ua",
+            "description": "API"
+        }
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Авторизация",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthLoginRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ViewAuthResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthRegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/ViewAuthResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": []
+            }
+        },
+        "/api/tasks/batch": {
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Создать несколько задач",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BatchTasksRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TasksViewResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Список задач",
+                "parameters": [
+                    {
+                        "name": "filter[category]",
+                        "in": "query",
+                        "allowReserved": [
+                            "work",
+                            "personal"
+                        ],
+                        "example": "work"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TasksViewResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/PaginatedLinksResource"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/PaginatedMetaResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Создать задачу",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TasksRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/TasksViewResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/tasks/{id}": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Просмотреть задачу",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/TasksViewResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Обновить задачу",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TasksRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/TasksViewResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Удалить задачу",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/error:bad_request"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/error:validation"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/error:server"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PaginatedLinksResource": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "http://test.dok/api/tasks?page=1",
+                        "nullable": true
+                    },
+                    "last": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "http://test.dok/api/tasks?page=4",
+                        "nullable": true
+                    },
+                    "prev": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "null",
+                        "nullable": true
+                    },
+                    "next": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "http://test.dok/api/tasks?page=2",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "PaginatedMetaResource": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": "4"
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaginatedMetaLinksResource"
+                        }
+                    },
+                    "path": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "http://test.dok/api/tasks"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": "15"
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": "15"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": "48"
+                    }
+                },
+                "type": "object"
+            },
+            "PaginatedMetaLinksResource": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "null",
+                        "nullable": true
+                    },
+                    "label": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "&laquo; Previous"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": "false"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthLoginRequest": {
+                "required": [
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Class LoginRequest",
+                        "type": "string",
+                        "format": "email",
+                        "example": "test@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "000000"
+                    }
+                },
+                "type": "object"
+            },
+            "AuthRegisterRequest": {
+                "required": [
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Class RegisterRequest",
+                        "type": "string",
+                        "format": "email",
+                        "example": "test@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "000000"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "example": "000000"
+                    }
+                },
+                "type": "object"
+            },
+            "BatchTasksRequest": {
+                "required": [
+                    "data"
+                ],
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "name",
+                                "description",
+                                "category",
+                                "deadline",
+                                "urgent",
+                                "image"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "description": "Class BatchRequest",
+                                    "type": "string",
+                                    "example": "test"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "test"
+                                },
+                                "category": {
+                                    "type": "string",
+                                    "enum": [
+                                        "work",
+                                        "personal"
+                                    ],
+                                    "example": "work"
+                                },
+                                "deadline": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2022-10-05"
+                                },
+                                "urgent": {
+                                    "type": "boolean",
+                                    "example": "false"
+                                },
+                                "image": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "TasksRequest": {
+                "required": [
+                    "name",
+                    "description",
+                    "category",
+                    "deadline",
+                    "urgent",
+                    "image"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Class Request",
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "work",
+                            "personal"
+                        ],
+                        "example": "work"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-10-05"
+                    },
+                    "urgent": {
+                        "type": "boolean",
+                        "example": "false"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "type": "object"
+            },
+            "ViewAuthResource": {
+                "properties": {
+                    "token": {
+                        "description": "Class ViewResource",
+                        "type": "string",
+                        "example": "1|Bjb2QGYzxKgqRFLbnHxeUkqR6drD7TpeF7Va3mgU"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/ViewUserResource"
+                    }
+                },
+                "type": "object"
+            },
+            "TasksIndexResource": {
+                "properties": {
+                    "id": {
+                        "description": "Class IndexResource",
+                        "type": "integer",
+                        "example": "234"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "work",
+                            "personal"
+                        ],
+                        "example": "work"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-10-05"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "example": "false"
+                    }
+                },
+                "type": "object"
+            },
+            "TasksViewResource": {
+                "properties": {
+                    "id": {
+                        "description": "Class ViewResource",
+                        "type": "integer",
+                        "example": "234"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "test"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "work",
+                            "personal"
+                        ],
+                        "example": "work"
+                    },
+                    "deadline": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-10-05"
+                    },
+                    "completed": {
+                        "type": "boolean",
+                        "example": "false"
+                    },
+                    "urgent": {
+                        "type": "boolean",
+                        "example": "false"
+                    },
+                    "image": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "http://test.dok/storage/52/download.jpeg"
+                    }
+                },
+                "type": "object"
+            },
+            "ViewUserResource": {
+                "properties": {
+                    "id": {
+                        "description": "Class ViewResource",
+                        "type": "integer",
+                        "example": "234"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "test@example.com"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2022-10-05T12:12:12.000Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "error:not_found": {
+                "description": "Данные не найдены",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Текст ошибки",
+                                    "type": "string",
+                                    "example": "messages.exception.not_found"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "error:gone": {
+                "description": "Gone",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Текст ошибки",
+                                    "type": "string",
+                                    "example": "messages.exception.gone"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "error:bad_request": {
+                "description": "Bad request",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Текст ошибки",
+                                    "type": "string",
+                                    "example": "messages.exception.bad_request"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "error:unauthenticated": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Текст ошибки",
+                                    "type": "string",
+                                    "example": "messages.exception.unauthenticated"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "error:server": {
+                "description": "Internal server error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Текст ошибки",
+                                    "type": "string",
+                                    "example": "messages.exception.server"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "error:too_many_requests": {
+                "description": "Too many requests",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "description": "Текст ошибки",
+                                    "type": "string",
+                                    "example": "messages.exception.too_many_requests"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "error:validation": {
+                "description": "Data validation failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "messages.exception.given_data_invalid"
+                                },
+                                "errors": {
+                                    "properties": {
+                                        "field": {
+                                            "type": "string",
+                                            "example": "Field is required"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "http",
+                "description": "Токен авторизации, полученный при логине.<b>Authorization: Bearer {token}</b>",
+                "name": "Authorization",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearer": []
+        }
+    ]
+}
